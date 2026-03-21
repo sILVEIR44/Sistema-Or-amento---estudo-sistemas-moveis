@@ -3,6 +3,9 @@ import { FlatList, View, Text } from "react-native";
 import { BudgetCard } from "@/components/budgetCard";
 import { Budget } from "@/types/budget";
 import { styles } from "@/app/home/styles";
+import { Button } from "@/components/button";
+import { Input } from "@/components/input";
+import { Filter } from "@/components/filter";
 
 export function Home() {
     const [budgets, setBudgets] = useState<Budget[]>([
@@ -12,14 +15,23 @@ export function Home() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Orçamentos</Text>
-            <Text>Você tem 1 item em rascunho</Text>
+            <View style={styles.header}>
+                <View>
+                    <Text style={styles.title}>Orçamentos</Text>
+                    <Text>Você tem 1 item em rascunho</Text>
+                </View>
+                <Button title="Novo" />
+            </View>
+            <View style={styles.input}>
+                <Input placeholder="Título ou Cliente"/>
+                <Filter/>
+            </View>
             <FlatList
                 data={budgets}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => <BudgetCard data={item} />}
-                contentContainerStyle={{paddingBottom: 20}}
-                ItemSeparatorComponent={() => <View style={{ height: 10 }}/>}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             />
         </View>
     )
