@@ -5,6 +5,5 @@ export interface Budget {
   cliente: string;
   projeto: string;
   valor: number;
-  data: string;
   status: Status;
 }
