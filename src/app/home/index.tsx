@@ -21,30 +21,40 @@ export function Home() {
     }, []);
 
     async function handleTestSave() {
-    try {
-        const idAleatorio = Math.floor(Math.random() * 1000).toString();
-        
-        const mockBudget: Budget = {
-            id: idAleatorio,
-            cliente: `Cliente Teste ${idAleatorio}`,
-            projeto: "Projeto via Botão Teste",
-            valor: 999.90,
-            status: "Rascunho"
-        };
+        try {
+            const idAleatorio = Math.floor(Math.random() * 1000).toString();
 
-        console.log("Tentando salvar...", mockBudget);
-        
-        await BudgetStorage.save(mockBudget);
-        
-        console.log("Salvo com sucesso!");
-        
-        // Recarrega a lista para ver o item aparecer na hora
-        await fetchBudgets(); 
+            const mockBudget: Budget = {
+                id: idAleatorio,
+                cliente: `Cliente Teste ${idAleatorio}`,
+                projeto: "Projeto via Botão Teste",
+                valor: 999.90,
+                status: "Rascunho"
+            };
 
-    } catch (error) {
-        console.error("Erro no teste:", error);
+            console.log("Tentando salvar...", mockBudget);
+
+            await BudgetStorage.save(mockBudget);
+
+            console.log("Salvo com sucesso!");
+
+            // Recarrega a lista para ver o item aparecer na hora
+            await fetchBudgets();
+
+        } catch (error) {
+            console.error("Erro no teste:", error);
+        }
     }
-}
+
+    async function handleDeleteBudget(id: string) {
+        try{
+            await BudgetStorage.delete(id);
+            await fetchBudgets();
+            console.log("Item removido com sucesso");
+        } catch (error){
+            console.error("Não foi possível deletar:", error);
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -53,7 +63,7 @@ export function Home() {
                     <Text style={styles.title}>Orçamentos</Text>
                     <Text>Você tem 1 item em rascunho</Text>
                 </View>
-                <Button title="Novo" onPress={handleTestSave}/>
+                <Button title="Novo" onPress={handleTestSave} />
             </View>
             <View style={styles.input}>
                 <Input placeholder="Título ou Cliente" />
@@ -62,7 +72,8 @@ export function Home() {
             <FlatList
                 data={budgets}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <BudgetCard data={item} />}
+                renderItem={({ item }) => <BudgetCard data={item} 
+                onDelete={() => handleDeleteBudget(item.id)}/>}
                 contentContainerStyle={{ paddingBottom: 20 }}
                 ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             />

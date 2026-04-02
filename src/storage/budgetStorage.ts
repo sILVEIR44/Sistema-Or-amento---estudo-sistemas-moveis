@@ -16,14 +16,25 @@ export const BudgetStorage = {
     },
 
     async save(newBudget: Budget): Promise<void> {
-    try {
-        const currentData = await this.get();
-        const updateData = [...currentData, newBudget];
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));       
-    } catch (error) {
-        console.error("Erro ao salvar:", error);
-        throw error;
+        try {
+            const currentData = await this.get();
+            const updateData = [...currentData, newBudget];
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));
+        } catch (error) {
+            console.error("Erro ao salvar:", error);
+            throw error;
+        }
+    },
+
+    async delete(id: string): Promise<void> {
+        try{
+            const currentData = await this.get();
+            const updateData = currentData.filter(budget => budget.id !== id);
+            await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));
+        } catch (error) {
+            console.error("Erro ao deletar:", error);
+            throw error;
+        }
     }
-}
 
 }

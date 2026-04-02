@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
         elevation: 2,
         shadowColor: '#000',
         shadowOpacity:0.1,
-        shadowRadius:4
+        shadowRadius:4,
+        alignItems: "center"
     },
 
     client: {
@@ -25,7 +26,8 @@ export const styles = StyleSheet.create({
     },
 
     rightContent: {
-        alignItems: 'flex-end'
+        alignItems: 'center',
+        flexDirection: 'row'
     },
 
     value: {
@@ -44,6 +46,12 @@ export const styles = StyleSheet.create({
 
     draft: {
         color: 'gray'
+    },
+
+    deleteButton: {
+        marginLeft: 15,
+        padding: 5,
+        alignItems: 'flex-end'
     }
 }
 )
