@@ -29,7 +29,7 @@ export function Home() {
                 cliente: `Cliente Teste ${idAleatorio}`,
                 projeto: "Projeto via Botão Teste",
                 valor: 999.90,
-                status: "Rascunho"
+                status: "Aprovado"
             };
 
             console.log("Tentando salvar...", mockBudget);
@@ -38,7 +38,6 @@ export function Home() {
 
             console.log("Salvo com sucesso!");
 
-            // Recarrega a lista para ver o item aparecer na hora
             await fetchBudgets();
 
         } catch (error) {

@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         elevation: 2,
         shadowColor: '#000',
-        shadowOpacity:0.1,
-        shadowRadius:4,
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
         alignItems: "center"
     },
 
@@ -18,16 +18,11 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#333'
-    } ,
+    },
 
     project: {
         fontSize: 14,
         color: '#666'
-    },
-
-    rightContent: {
-        alignItems: 'center',
-        flexDirection: 'row'
     },
 
     value: {
@@ -39,7 +34,7 @@ export const styles = StyleSheet.create({
         fontSize: 12,
         marginTop: 4
     },
-     
+
     approved: {
         color: 'green'
     },
@@ -50,8 +45,27 @@ export const styles = StyleSheet.create({
 
     deleteButton: {
         marginLeft: 15,
+        marginBottom: 5,
         padding: 5,
         alignItems: 'flex-end'
+    },
+    statusBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
+        marginBottom: 8,
+    },
+    statusDot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginRight: 6,
+    },
+    statusText: {
+        fontSize: 12,
+        fontWeight: 'bold',
     }
 }
 )
