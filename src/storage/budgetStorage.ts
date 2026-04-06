@@ -27,7 +27,7 @@ export const BudgetStorage = {
     },
 
     async delete(id: string): Promise<void> {
-        try{
+        try {
             const currentData = await this.get();
             const updateData = currentData.filter(budget => budget.id !== id);
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));
@@ -35,6 +35,17 @@ export const BudgetStorage = {
             console.error("Erro ao deletar:", error);
             throw error;
         }
+    },
+
+    async deleteAll(): Promise<void> {
+        try {
+            await AsyncStorage.clear();
+
+        } catch (error) {
+            console.error("Erro ao limpar banco:", error);
+            throw error;
+        }
+
     }
 
 }

@@ -14,5 +14,17 @@ export const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 14,
         fontWeight: 600
+    },
+
+    limparBackgorund: {
+        paddingBottom: 10,
+        paddingRight: 10,
+        alignItems: "flex-end"
+    },
+
+    limpar: {
+        color: '#676767',
+        fontSize: 15,
+        fontWeight: 600
     }
 })

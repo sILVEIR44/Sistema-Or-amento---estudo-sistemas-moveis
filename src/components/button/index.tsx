@@ -14,3 +14,11 @@ export function Button({title, ...rest}: Props) {
         </TouchableOpacity>
     )
 }
+
+export function ClearAll({title, ...rest}: Props) {
+    return (
+        <TouchableOpacity style={styles.limparBackgorund} activeOpacity={0.5} {...rest}>
+            <Text style={styles.limpar}>{title}</Text>
+        </TouchableOpacity>
+    )
+}

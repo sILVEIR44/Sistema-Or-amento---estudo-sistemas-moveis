@@ -27,5 +27,14 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+
+    limpar: {
+        justifyContent: "center",
+        paddingBottom: 10
+    },
+
+    alert: {
+        justifyContent: "space-between"
     }
 })

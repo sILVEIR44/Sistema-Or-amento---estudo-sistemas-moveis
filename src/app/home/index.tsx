@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { FlatList, View, Text } from "react-native";
+import { FlatList, View, Text, Alert } from "react-native";
 import { BudgetCard } from "@/components/budgetCard";
 import { Budget } from "@/types/budget";
 import { styles } from "@/app/home/styles";
-import { Button } from "@/components/button";
+import { Button, ClearAll } from "@/components/button";
 import { Input } from "@/components/input";
 import { Filter } from "@/components/filter";
 import { BudgetStorage } from "@/storage/budgetStorage";
@@ -46,14 +46,60 @@ export function Home() {
     }
 
     async function handleDeleteBudget(id: string) {
-        try{
-            await BudgetStorage.delete(id);
-            await fetchBudgets();
-            console.log("Item removido com sucesso");
-        } catch (error){
-            console.error("Não foi possível deletar:", error);
-        }
+        Alert.alert(
+            "Excluir orçamento",
+            "Tem certeza que deseja excluir esse orçamento? Essa ação não poderá ser desfeita.",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Sim, excluir",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await BudgetStorage.delete(id);
+                            await fetchBudgets();
+                            console.log("Item removido com sucesso");
+                        } catch (error) {
+                            console.error("Não foi possível deletar:", error);
+                        }
+                    }
+                }
+
+            ]
+
+        );
     }
+
+    async function handleClearAll() {
+        Alert.alert(
+            "Limpar Tudo",
+            "Realmente deseja excluir TODOS os orçamentos? Essa ação é irreversível.",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Sim, excluir TODOS os orçamentos",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await BudgetStorage.deleteAll();
+                            await fetchBudgets();
+                            console.log("Banco limpo com sucesso");
+                        } catch (error) {
+                            Alert.alert("Erro", "Não foi possível limpar os dados.");
+                        }
+                    }
+                }
+            ]
+        )
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -68,11 +114,14 @@ export function Home() {
                 <Input placeholder="Título ou Cliente" />
                 <Filter />
             </View>
+            <View>
+                <ClearAll title="Limpar" onPress={handleClearAll} />
+            </View>
             <FlatList
                 data={budgets}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => <BudgetCard data={item} 
-                onDelete={() => handleDeleteBudget(item.id)}/>}
+                renderItem={({ item }) => <BudgetCard data={item}
+                    onDelete={() => handleDeleteBudget(item.id)} />}
                 contentContainerStyle={{ paddingBottom: 20 }}
                 ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
             />
