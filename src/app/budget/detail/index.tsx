@@ -130,7 +130,6 @@ export function BudgetDetail() {
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
-        {/* Card do projeto */}
         <View style={styles.projectCard}>
           <View style={styles.projectIcon}>
             <Ionicons name="document-text" size={24} color="#6A46EB" />
@@ -138,7 +137,6 @@ export function BudgetDetail() {
           <Text style={styles.projectTitle}>{budget.projeto}</Text>
         </View>
 
-        {/* Card de informações */}
         <View style={styles.infoCard}>
           <Text style={styles.infoLabel}>Cliente</Text>
           <Text style={styles.infoValue}>{budget.cliente}</Text>
@@ -155,7 +153,6 @@ export function BudgetDetail() {
           </View>
         </View>
 
-        {/* Serviços inclusos */}
         <View style={styles.sectionHeader}>
           <Ionicons name="briefcase-outline" size={16} color="#6A46EB" />
           <Text style={styles.sectionTitle}>Serviços inclusos</Text>
@@ -182,7 +179,6 @@ export function BudgetDetail() {
           )}
         </View>
 
-        {/* Investimento */}
         <View style={styles.card}>
           <View style={styles.investRow}>
             <Text style={styles.investLabel}>Subtotal</Text>
@@ -214,7 +210,6 @@ export function BudgetDetail() {
         <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Barra de ações */}
       <View style={styles.actionBar}>
         <TouchableOpacity style={styles.actionBtn} onPress={handleDelete}>
           <Ionicons name="trash-outline" size={22} color="#D84D4D" />
