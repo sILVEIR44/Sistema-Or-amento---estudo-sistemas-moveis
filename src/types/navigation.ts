@@ -17,8 +17,12 @@ export const FILTER_DEFAULT: FilterState = {
 export type RootStackParamList = {
   Home: { appliedFilters?: FilterState } | undefined;
   Filter: { currentFilters: FilterState };
+  NewBudget: { budgetId?: string } | undefined;
+  BudgetDetail: { budgetId: string };
 };
 
-export type AppNavigationProp = NativeStackNavigationProp<RootStackParamList>;
-export type FilterRouteProp   = RouteProp<RootStackParamList, 'Filter'>;
-export type HomeRouteProp     = RouteProp<RootStackParamList, 'Home'>; 
+export type AppNavigationProp     = NativeStackNavigationProp<RootStackParamList>;
+export type FilterRouteProp       = RouteProp<RootStackParamList, 'Filter'>;
+export type HomeRouteProp         = RouteProp<RootStackParamList, 'Home'>;
+export type NewBudgetRouteProp    = RouteProp<RootStackParamList, 'NewBudget'>;
+export type BudgetDetailRouteProp = RouteProp<RootStackParamList, 'BudgetDetail'>;

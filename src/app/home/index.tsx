@@ -8,11 +8,14 @@ import { Button, ClearAll } from "@/components/button";
 import { Input } from "@/components/input";
 import { Filter } from "@/components/filter";
 import { BudgetStorage } from "@/storage/budgetStorage";
-import {AppNavigationProp, HomeRouteProp, FilterState, FILTER_DEFAULT} from "@/types/navigation";
+import {
+  AppNavigationProp, HomeRouteProp,
+  FilterState, FILTER_DEFAULT,
+} from "@/types/navigation";
 
 export function Home() {
   const navigation = useNavigation<AppNavigationProp>();
-  const route = useRoute<HomeRouteProp>();
+  const route      = useRoute<HomeRouteProp>();
 
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [search, setSearch]   = useState('');
@@ -40,9 +43,7 @@ export function Home() {
     if (search.trim()) {
       const term = search.toLowerCase();
       result = result.filter(
-        b =>
-          b.projeto.toLowerCase().includes(term) ||
-          b.cliente.toLowerCase().includes(term)
+        b => b.projeto.toLowerCase().includes(term) || b.cliente.toLowerCase().includes(term)
       );
     }
 
@@ -51,69 +52,44 @@ export function Home() {
     }
 
     switch (filters.orderBy) {
-      case 'recente':
-        result.sort((a, b) => b.id.localeCompare(a.id));
-        break;
-      case 'antigo':
-        result.sort((a, b) => a.id.localeCompare(b.id));
-        break;
-      case 'maior':
-        result.sort((a, b) => b.valor - a.valor);
-        break;
-      case 'menor':
-        result.sort((a, b) => a.valor - b.valor);
-        break;
+      case 'recente': result.sort((a, b) => b.id.localeCompare(a.id)); break;
+      case 'antigo':  result.sort((a, b) => a.id.localeCompare(b.id)); break;
+      case 'maior':   result.sort((a, b) => b.valor - a.valor); break;
+      case 'menor':   result.sort((a, b) => a.valor - b.valor); break;
     }
 
     return result;
   }, [budgets, search, filters]);
 
   const activeFilterCount =
-    filters.statuses.length +
-    (filters.orderBy !== FILTER_DEFAULT.orderBy ? 1 : 0);
+    filters.statuses.length + (filters.orderBy !== FILTER_DEFAULT.orderBy ? 1 : 0);
 
   async function handleDeleteBudget(id: string) {
-    Alert.alert(
-      "Excluir orçamento",
-      "Tem certeza que deseja excluir esse orçamento? Essa ação não poderá ser desfeita.",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Sim, excluir",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await BudgetStorage.delete(id);
-              await fetchBudgets();
-            } catch (error) {
-              console.error("Não foi possível deletar:", error);
-            }
-          },
+    Alert.alert("Excluir orçamento", "Tem certeza que deseja excluir?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Sim, excluir",
+        style: "destructive",
+        onPress: async () => {
+          await BudgetStorage.delete(id);
+          await fetchBudgets();
         },
-      ]
-    );
+      },
+    ]);
   }
 
   async function handleClearAll() {
-    Alert.alert(
-      "Limpar Tudo",
-      "Realmente deseja excluir TODOS os orçamentos? Essa ação é irreversível.",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Sim, excluir TODOS os orçamentos",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await BudgetStorage.deleteAll();
-              await fetchBudgets();
-            } catch {
-              Alert.alert("Erro", "Não foi possível limpar os dados.");
-            }
-          },
+    Alert.alert("Limpar Tudo", "Deseja excluir TODOS os orçamentos?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Sim, excluir TODOS",
+        style: "destructive",
+        onPress: async () => {
+          await BudgetStorage.deleteAll();
+          await fetchBudgets();
         },
-      ]
-    );
+      },
+    ]);
   }
 
   const rascunhos = budgets.filter(b => b.status === 'Rascunho').length;
@@ -129,20 +105,14 @@ export function Home() {
               : `Você tem ${rascunhos} item${rascunhos > 1 ? 's' : ''} em rascunho`}
           </Text>
         </View>
-        <Button title="Novo" onPress={() => {}} />
+        <Button title="Novo" onPress={() => navigation.navigate('NewBudget')} />
       </View>
 
       <View style={styles.input}>
-        <Input
-          placeholder="Título ou Cliente"
-          value={search}
-          onChangeText={setSearch}
-        />
+        <Input placeholder="Título ou Cliente" value={search} onChangeText={setSearch} />
         <Filter
           activeCount={activeFilterCount}
-          onPress={() =>
-            navigation.navigate('Filter', { currentFilters: filters })
-          }
+          onPress={() => navigation.navigate('Filter', { currentFilters: filters })}
         />
       </View>
 
@@ -156,6 +126,7 @@ export function Home() {
         renderItem={({ item }) => (
           <BudgetCard
             data={item}
+            onPress={() => navigation.navigate('BudgetDetail', { budgetId: item.id })}
             onDelete={() => handleDeleteBudget(item.id)}
           />
         )}

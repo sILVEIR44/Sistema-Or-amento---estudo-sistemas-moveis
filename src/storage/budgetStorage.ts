@@ -15,13 +15,37 @@ export const BudgetStorage = {
     }
   },
 
+  async getById(id: string): Promise<Budget | null> {
+    try {
+      const budgets = await this.get();
+      return budgets.find(b => b.id === id) ?? null;
+    } catch (error) {
+      console.error("Erro ao buscar orçamento:", error);
+      return null;
+    }
+  },
+
   async save(newBudget: Budget): Promise<void> {
     try {
       const currentData = await this.get();
-      const updateData = [...currentData, newBudget];
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([...currentData, newBudget]));
     } catch (error) {
       console.error("Erro ao salvar:", error);
+      throw error;
+    }
+  },
+
+  async update(updatedBudget: Budget): Promise<void> {
+    try {
+      const currentData = await this.get();
+      const updated = currentData.map(b =>
+        b.id === updatedBudget.id
+          ? { ...updatedBudget, atualizadoEm: new Date().toISOString() }
+          : b
+      );
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (error) {
+      console.error("Erro ao atualizar:", error);
       throw error;
     }
   },
@@ -29,8 +53,10 @@ export const BudgetStorage = {
   async delete(id: string): Promise<void> {
     try {
       const currentData = await this.get();
-      const updateData = currentData.filter(budget => budget.id !== id);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updateData));
+      await AsyncStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(currentData.filter(b => b.id !== id))
+      );
     } catch (error) {
       console.error("Erro ao deletar:", error);
       throw error;
